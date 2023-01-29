@@ -1,0 +1,90 @@
+version: '3'
+
+services:
+
+  db:
+    image: postgres:12
+    volumes:
+      - pg_data:/var/lib/postgresql/data/
+    container_name: db_postgres_12
+    environment:
+      POSTGRES_DB: dbname
+      POSTGRES_PASSWORD: dbpass
+      POSTGRES_USER: dbuser
+
+  drf:
+    container_name: web
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: bash run.sh
+    environment:
+      - DB_HOST=db
+      - DB_NAME=dbname
+      - DB_USER=dbuser
+      - DB_PASS=dbpass
+    volumes:
+      - .:/usr/src/supp_app_drf_v2
+    ports:
+      - '8000:8000'
+    depends_on:
+      - db
+
+  redis:
+    image: redis
+    container_name: redis_sa
+    hostname: redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - redisdata:/data
+
+  celery:
+    build:
+      context: .
+    container_name: celery_sa
+    entrypoint: celery
+    command: -A supp_app_drf_v2 worker -l info
+    environment:
+      - DEBUG=1
+      - CELERY_BROKER_URL = 'redis://redis:6379'
+      - CELERY_RESULT_BACKEND = 'redis://redis:6379'
+      - CELERY_ACCEPT_CONTENT = ['application/json']
+      - CELERY_RESULT_SERIALIZER = 'json'
+      - CELERY_TASK_SERIALIZER = 'json'
+      - DB_HOST=db
+      - DB_NAME=dbname
+      - DB_USER=dbuser
+      - DB_PASS=dbpass
+    volumes:
+     - .:/usr/src/supp_app_drf_v2
+    links:
+     - redis
+    depends_on:
+     - redis
+
+  celery-beat:
+    build: .
+    container_name: celery_beat_sa
+    command: celery -A supp_app_drf_v2 beat -l info
+    volumes:
+      - .:/usr/src/supp_app_drf_v2
+    environment:
+      - DEBUG=1
+      - CELERY_BROKER_URL = 'redis://redis:6379'
+      - CELERY_RESULT_BACKEND = 'redis://redis:6379'
+      - CELERY_ACCEPT_CONTENT = ['application/json']
+      - CELERY_RESULT_SERIALIZER = 'json'
+      - CELERY_TASK_SERIALIZER = 'json'
+      - DB_HOST=db
+      - DB_NAME=dbname
+      - DB_USER=dbuser
+      - DB_PASS=dbpass
+    depends_on:
+      - db
+      - redis
+      - celery
+
+volumes:
+  pg_data:
+  redisdata:
