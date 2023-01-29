@@ -17,16 +17,16 @@ def debug_task(self):
     print(f'Request: {self.request!r}')
 
 
-# app.conf.beat_schedule = {
-#     'send-mail-everyday-day-at-9.00am-(UTC+3)': {
-#         'task': 'support.tasks.send_beat_mail_tickets',
-#         'schedule': crontab(minute=0, hour=6),
-#     },
-# }
-
 app.conf.beat_schedule = {
-    'send-mail-everyday-minute': {
+    'send-mail-everyday-day-at-9.00am-(UTC+3)': {
         'task': 'support.tasks.send_beat_mail_tickets',
-        'schedule': crontab(),
+        'schedule': crontab(minute=0, hour=6),
     },
 }
+
+# app.conf.beat_schedule = {
+#     'send-mail-everyday-minute': {
+#         'task': 'support.tasks.send_beat_mail_tickets',
+#         'schedule': crontab(),
+#     },
+# }
