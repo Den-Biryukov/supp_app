@@ -122,3 +122,4 @@ Dockerfile.prod
 Dockerfile1.prod
 entrypoint.prod.sh
 run.prod.sh
+.env.dev
