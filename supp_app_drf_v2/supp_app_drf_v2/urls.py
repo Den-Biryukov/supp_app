@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include, re_path
-from .yasg import urlpatterns as doc_urls
+from supp_app_drf_v2.yasg import urlpatterns as doc_urls
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 

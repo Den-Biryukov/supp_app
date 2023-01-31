@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Ticket, Comment
+from support.models import Ticket, Comment
 
 
 class RecursiveSerializer(serializers.Serializer):

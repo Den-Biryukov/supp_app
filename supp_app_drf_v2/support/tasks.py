@@ -2,7 +2,7 @@ from supp_app_drf_v2.celery import app
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from supp_app_drf_v2 import settings
-from .models import Ticket
+from support.models import Ticket
 
 
 list_of_admins_and_supports = [user for user in get_user_model().objects.all() if user.is_staff]

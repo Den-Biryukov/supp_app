@@ -1,9 +1,9 @@
 from rest_framework import generics
-from .models import Ticket, Comment
-from .permissions import IsUser, IsAdminOrSupport
-from .serializers import TicketListSerializer, TicketCreateSerializer, \
-                         TicketForSupportSerializer, UpdateTicketForSupportSerializer, \
-                         CommentListSerializer, CommentSerializer
+from support.models import Ticket, Comment
+from support.permissions import IsUser, IsAdminOrSupport
+from support.serializers import TicketListSerializer, TicketCreateSerializer, \
+                                TicketForSupportSerializer, UpdateTicketForSupportSerializer, \
+                                CommentListSerializer, CommentSerializer
 from .pagination import ListPagination
 from .tasks import send_mail_func
 from rest_framework.permissions import IsAuthenticated

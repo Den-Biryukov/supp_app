@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import ListCreateTicketAPIView, ListAllTicketAPIView, \
-                   ListUpdateTicketAPIView, CommentCreateAPIView
+from support.views import ListCreateTicketAPIView, ListAllTicketAPIView, \
+                          ListUpdateTicketAPIView, CommentCreateAPIView
 
 
 # Ticket
