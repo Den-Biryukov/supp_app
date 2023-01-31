@@ -21,7 +21,7 @@ class CommentListSerializer(serializers.ModelSerializer):
     children = RecursiveSerializer(many=True)
 
     def get_username(self, obj):
-        return obj.user.username + ' - Support'
+        return f'Support: {obj.user.username}'
 
     user = serializers.SerializerMethodField('get_username')
 
