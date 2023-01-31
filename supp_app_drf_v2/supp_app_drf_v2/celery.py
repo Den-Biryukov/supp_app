@@ -23,10 +23,3 @@ app.conf.beat_schedule = {
         'schedule': crontab(minute=0, hour=6),
     },
 }
-
-# app.conf.beat_schedule = {
-#     'send-mail-everyday-minute': {
-#         'task': 'support.tasks.send_beat_mail_tickets',
-#         'schedule': crontab(),
-#     },
-# }
