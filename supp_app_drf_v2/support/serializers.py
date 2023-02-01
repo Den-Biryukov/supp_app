@@ -66,7 +66,10 @@ class TicketForSupportSerializer(serializers.ModelSerializer):
 
     user = serializers.SerializerMethodField('get_id_and_username')
 
-    status = serializers.SerializerMethodField()
+    status = serializers.SerializerMethodField('get_status')
+
+    def get_status(self, obj):
+        return obj.get_status_display()
 
     unsolved_tickets_count = serializers.SerializerMethodField()
     decided_tickets_count = serializers.SerializerMethodField()
@@ -76,31 +79,20 @@ class TicketForSupportSerializer(serializers.ModelSerializer):
 
     time_create = serializers.DateTimeField(read_only=True)
 
-    def get_status(self, instance):
-
-        if Ticket.objects.filter(user__ticket=instance,
-                                 unsolved_status=True):
-            return 'unsolved'
-        elif Ticket.objects.filter(user__ticket=instance,
-                                   decided_status=True):
-            return 'decided'
-        else:
-            return 'frozen'
-
     def get_unsolved_tickets_count(self, instance):
 
         return Ticket.objects.filter(user__ticket=instance,
-                                     unsolved_status=True).count()
+                                     status=0).count()
 
     def get_decided_tickets_count(self, instance):
 
         return Ticket.objects.filter(user__ticket=instance,
-                                     decided_status=True).count()
+                                     status=1).count()
 
     def get_frozen_tickets_count(self, instance):
 
         return Ticket.objects.filter(user__ticket=instance,
-                                     frozen_status=True).count()
+                                     status=2).count()
 
     class Meta:
         model = Ticket
@@ -113,4 +105,4 @@ class UpdateTicketForSupportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ticket
-        fields = ('decided_status', 'unsolved_status', 'frozen_status')
+        fields = ('status',)

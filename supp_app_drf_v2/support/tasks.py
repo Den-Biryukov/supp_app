@@ -20,8 +20,10 @@ def is_user_support():
 def send_mail_func(self, user_id, ticket_status):
     user = get_user_model().objects.get(id=user_id)
     mail_subject = "ticket status"
-    message = f"Dear {user.username}, your ticket status was changed" \
-              f" to {ticket_status[:-7]}."
+
+    STATUS = ['unsolved', 'solved', 'frozen']
+
+    message = f"Dear {user.username}, your ticket status was changed to {STATUS[int(ticket_status)]}."
     to_email = user.email
     send_mail(
         subject=mail_subject,
@@ -43,11 +45,11 @@ def send_beat_mail_tickets(self):
             ticket_count = Ticket.objects.filter(user=user).count()
 
             unsolved_tickets = Ticket.objects.filter(user=user,
-                                                     unsolved_status=True).count()
+                                                     status=0).count()
             decided_tickets = Ticket.objects.filter(user=user,
-                                                    decided_status=True).count()
+                                                    status=1).count()
             frozen_tickets = Ticket.objects.filter(user=user,
-                                                   frozen_status=True).count()
+                                                   status=2).count()
 
             send_mail(
                 subject=mail_subject,

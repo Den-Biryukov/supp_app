@@ -24,9 +24,13 @@ class Ticket(models.Model):
     ticket_name = models.CharField(max_length=100)
     description = models.TextField(max_length=500)
 
-    decided_status = models.BooleanField(default=False)
-    unsolved_status = models.BooleanField(default=True)
-    frozen_status = models.BooleanField(default=False)
+    STATUS = [
+        (0, 'unsolved'),
+        (1, 'solved'),
+        (2, 'frozen')
+    ]
+
+    status = models.PositiveSmallIntegerField(choices=STATUS, blank=False, default=0)
 
     time_create = models.DateTimeField(auto_now_add=True)
 

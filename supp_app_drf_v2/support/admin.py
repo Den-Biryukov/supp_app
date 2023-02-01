@@ -3,9 +3,7 @@ from support.models import Support, Ticket, Comment
 
 
 class TicketAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'ticket_name', 'description', 'decided_status',
-                    'unsolved_status', 'frozen_status')
-    list_filter = ('decided_status', 'unsolved_status', 'frozen_status')
+    list_display = ('id', 'user', 'ticket_name', 'description',)
 
 
 class SupportAdmin(admin.ModelAdmin):

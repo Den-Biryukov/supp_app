@@ -40,14 +40,10 @@ class ListUpdateTicketAPIView(generics.RetrieveUpdateAPIView):
         else:
             return UpdateTicketForSupportSerializer
 
-    # for Celery
     def put(self, request, *args, **kwargs):
         pk = kwargs.get('pk')
         user_id = Ticket.objects.get(id=pk).user.id
-
-        for status in request.data:
-            ticket_status = status
-
+        ticket_status = request.data['status']
         send_mail_func.delay(user_id, ticket_status)
         return self.update(request, *args, **kwargs)
 
